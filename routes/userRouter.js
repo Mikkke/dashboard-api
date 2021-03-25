@@ -33,12 +33,15 @@ userRouter.post("/login", async (req, res) => {
     res.status(400).json({ msg: "wrong email or password" });
   } else {
     const accessToken = createTokens(userExist);
-    res.cookie("access-token", accessToken, { maxAge: 60 * 60 });
+    res.cookie("access-token", accessToken, {
+      maxAge: 60 * 60 * 24 * 30 * 1000,
+    });
     res.json({ msg: "you are logged in" });
   }
 });
 
-userRouter.get("/getprofil", (req, res) => {
+userRouter.get("/profil", validateTokens, (req, res) => {
+  console.log("req :>> ", req);
   res.send("good from api");
 });
 
